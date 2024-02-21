@@ -75,4 +75,34 @@ Console.WriteLine($"Result: {resultTask2}");
 Response task2AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task2.taskID, resultTask2);
 Console.WriteLine($"Response: {task2AnswerResponse.content}");
 
+//#### THIRD TASK
+Task.InfoFomAPI task3 = new Task.InfoFomAPI();
+task3.taskID = "KO1pD3";
+Response task3Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + task3.taskID);
+task3 = JsonSerializer.Deserialize<Task.InfoFomAPI>(task3Response.content);
+
+Console.WriteLine($"Task 3: {task3.title}");
+Console.WriteLine($"{task3.description}");
+Console.WriteLine($"Parameters: {task3.parameters}");
+
+string[] numbers = task3.parameters.Split(",");
+int[] numbersArray = Array.ConvertAll(numbers, int.Parse);
+int difference = numbersArray[1] - numbersArray[0];
+
+for (int i = 2; i < numbersArray.Length; i++)
+{
+    if (numbersArray[i] - numbersArray[i - 1] != difference)
+    {
+        difference = numbersArray[i] - numbersArray[i - 1];
+        break;
+    }
+}
+
+int nextNumber = numbersArray[^1] + difference;
+string resultTask3 = nextNumber.ToString();
+
+Console.WriteLine($"Result: {resultTask3}");
+Response task3AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task3.taskID, resultTask3);
+Console.WriteLine($"Response: {task3AnswerResponse.content}");
+
 
