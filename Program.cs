@@ -4,7 +4,7 @@ using System.Text.Json;
 using AnsiTools;
 using Colors = AnsiTools.ANSICodes.Colors;
 using Task;
-
+using romanNumerals;
 
 Console.Clear();
 Console.WriteLine("Starting Assignment 2");
@@ -105,4 +105,33 @@ Console.WriteLine($"Result: {resultTask3}");
 Response task3AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task3.taskID, resultTask3);
 Console.WriteLine($"Response: {task3AnswerResponse.content}");
 
+//#### FOURTH TASK
+Task.InfoFomAPI task4 = new Task.InfoFomAPI();
+task4.taskID = "rEu25ZX";
+Response task4Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + task4.taskID);
+task4 = JsonSerializer.Deserialize<Task.InfoFomAPI>(task4Response.content);
+romanNumberTranslator romanNumerals = new romanNumberTranslator();
 
+Console.WriteLine($"Task 4: {task4.title}");
+Console.WriteLine($"{task4.description}");
+Console.WriteLine($"Parameters: {task4.parameters}");
+
+int numberTask4 = 0;
+
+for (int i = 0; i < task4.parameters.Length; i++)
+{
+    if (i == 0 || romanNumerals.RomanNumbersTranslated[task4.parameters[i]] <= romanNumerals.RomanNumbersTranslated[task4.parameters[i - 1]])
+    {
+        numberTask4 += romanNumerals.RomanNumbersTranslated[task4.parameters[i]];
+    }
+    else
+    {
+        numberTask4 += romanNumerals.RomanNumbersTranslated[task4.parameters[i]] - 2 * romanNumerals.RomanNumbersTranslated[task4.parameters[i - 1]];
+    }
+}
+
+string resultTask4 = numberTask4.ToString();
+
+Console.WriteLine($"Result: {resultTask4}");
+Response task4AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task4.taskID, resultTask4);
+Console.WriteLine($"Response: {task4AnswerResponse.content}");
