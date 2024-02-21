@@ -39,12 +39,40 @@ Console.WriteLine($"Parameters: {task1.parameters}");
 
 string[] words = task1.parameters.Split(",");
 string[] uniqueWords = words.Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(word => word).ToArray();
-string result = string.Join(",", uniqueWords);
+string resultTask1 = string.Join(",", uniqueWords);
 
 
-Console.WriteLine($"Result: {result}");
-Response task1AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task1.taskID, result);
+Console.WriteLine($"Result: {resultTask1}");
+Response task1AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task1.taskID, resultTask1);
 Console.WriteLine($"Response: {task1AnswerResponse.content}");
 
+//#### SECOND TASK
+Task.InfoFomAPI task2 = new Task.InfoFomAPI();
+task2.taskID = "aLp96";
+Response task2Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + task2.taskID); 
+task2 = JsonSerializer.Deserialize<Task.InfoFomAPI>(task2Response.content);
+
+Console.WriteLine($"Task 2: {task2.title}");
+Console.WriteLine($"{task2.description}");
+Console.WriteLine($"Parameters: {task2.parameters}");
+
+int number = int.Parse(task2.parameters);
+string oddOrEven(int number)
+{
+    if (number % 2 == 0)
+    {
+        return "even";
+    }
+    else
+    {
+        return "odd";
+    }
+}
+
+string resultTask2 = oddOrEven(number);
+
+Console.WriteLine($"Result: {resultTask2}");
+Response task2AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task2.taskID, resultTask2);
+Console.WriteLine($"Response: {task2AnswerResponse.content}");
 
 
