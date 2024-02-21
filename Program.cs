@@ -22,7 +22,7 @@ HttpUtils httpUtils = HttpUtils.instance;
 // We start by registering and getting the first task
 Response startRespons = await httpUtils.Get(baseURL + startEndpoint + myPersonalID);
 Console.WriteLine($"Start:\n{Colors.Magenta}{startRespons}{ANSICodes.Reset}\n\n"); // Print the response from the server to the console
-// We get the taskID from the previous response and use it to get the task (look at the console output to find the taskID)
+
 
 //#### FIRST TASK 
 // Fetch the details of the task from the server.
@@ -56,10 +56,10 @@ Console.WriteLine($"Task 2: {task2.title}");
 Console.WriteLine($"{task2.description}");
 Console.WriteLine($"Parameters: {task2.parameters}");
 
-int number = int.Parse(task2.parameters);
-string oddOrEven(int number)
+int numberTask2 = int.Parse(task2.parameters);
+string oddOrEven(int numberTask2)
 {
-    if (number % 2 == 0)
+    if (numberTask2 % 2 == 0)
     {
         return "even";
     }
@@ -69,8 +69,7 @@ string oddOrEven(int number)
     }
 }
 
-string resultTask2 = oddOrEven(number);
-
+string resultTask2 = oddOrEven(numberTask2);
 Console.WriteLine($"Result: {resultTask2}");
 Response task2AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task2.taskID, resultTask2);
 Console.WriteLine($"Response: {task2AnswerResponse.content}");
@@ -85,8 +84,8 @@ Console.WriteLine($"Task 3: {task3.title}");
 Console.WriteLine($"{task3.description}");
 Console.WriteLine($"Parameters: {task3.parameters}");
 
-string[] numbers = task3.parameters.Split(",");
-int[] numbersArray = Array.ConvertAll(numbers, int.Parse);
+string[] numbersTask3 = task3.parameters.Split(",");
+int[] numbersArray = Array.ConvertAll(numbersTask3, int.Parse);
 int difference = numbersArray[1] - numbersArray[0];
 
 for (int i = 2; i < numbersArray.Length; i++)
@@ -131,7 +130,6 @@ for (int i = 0; i < task4.parameters.Length; i++)
 }
 
 string resultTask4 = numberTask4.ToString();
-
 Console.WriteLine($"Result: {resultTask4}");
 Response task4AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + task4.taskID, resultTask4);
 Console.WriteLine($"Response: {task4AnswerResponse.content}");
